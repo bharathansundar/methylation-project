@@ -88,7 +88,6 @@ ax.legend(patients, fontsize = 110)
 ax.grid()
 
 
-# In[ ]:
 
 
 
