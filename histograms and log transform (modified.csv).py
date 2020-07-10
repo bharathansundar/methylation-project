@@ -41,10 +41,31 @@ df = df.drop(['ID_REF'], axis = 0)
 df_data = df.drop(['Patient Number'], axis =1)
 npdata = df_data.to_numpy()
 
+# need to separate out by methylated and unmethylated values
+# we do this by deleting even and odd indices
+
+meth = df_data.iloc[::2].to_numpy()
+unmeth = df_data.iloc[1::2].to_numpy()
+
+
+#separated histograms
+print("untransformed methylated")
+for i in meth:
+    plt.hist(i, bins = 50)
+plt.show()
+
+print("untransformed unmethylated")
+for i in unmeth:
+    plt.hist(i, bins = 50)
+plt.show()
+
+#combined graphs
+print("untransformed total")
 for i in npdata:
     plt.hist(i, bins = 50)
 plt.show()
-    
+
+print("log transformed total")
 for i in npdata:
     plt.hist(i, bins = 50, log = True)
 plt.show()
