@@ -70,11 +70,10 @@ for i in npdata:
     plt.hist(i, bins = 50, log = True)
 plt.show()
 
+# use kernel density estimation (smooth curves)
+
 import seaborn as sns
 sns.set()
-
-
-# use kernel density estimation (smooth curves)
 
 print("untransformed total")
 
