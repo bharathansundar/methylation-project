@@ -69,6 +69,24 @@ print("log transformed total")
 for i in npdata:
     plt.hist(i, bins = 50, log = True)
 plt.show()
+
+import seaborn as sns
+sns.set()
+
+
+# use kernel density estimation (smooth curves)
+
+print("untransformed total")
+
+for i in npdata:
+    sns.kdeplot(i, shade=True)
+    plt.xscale('log')
+plt.show()
+
+sns.kdeplot(df_data, shade = True)
+
+
+
     
 
     
