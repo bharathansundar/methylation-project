@@ -84,6 +84,11 @@ plt.show()
 
 sns.kdeplot(df_data, shade = True)
 
+# CONVERT THE DATA TO LOG FORM
+
+logdata = df_data.astype(float)
+logdata = logdata.transform(np.log)
+logdata
 
 
     
