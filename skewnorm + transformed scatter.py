@@ -68,6 +68,7 @@ logdata = logdata.transform(np.log)
 logdata
 
 
+
 # **skewnorm analysis on raw data**
 
 # In[125]:
@@ -83,13 +84,77 @@ print("skew value:", a)
 
 
 
-# **scatter analysis on transformed data (unmethylated vs methylated)**
 
-# In[129]:
+#***separating out df_data into the primary and recurrent dataframes***
+
+missing = df_data.iloc[10:16]
+
+#recur1 = unmeth
+#recur2 = meth
+#prim1 = unmeth
+#prim2 = meth
+
+recurmissing = missing.iloc[2:]
+
+#recurrent
+
+recur1 = df_data.iloc[3::4]
+recur1 = recur1.drop("Patient 11_primary tumour Unmethylated signal")
+
+recur1 = pd.concat([recur1, recurmissing.iloc[1::2]])
+
+recur2 = df_data.iloc[2::4]
+recur2 = recur2.drop("Patient 11_primary tumour Methylated signal")
 
 
-t1 = logdata[0:2]
-t1
+s = df_data.iloc[-1:]
+recur1 = pd.concat([recur1, s])
 
-plt.scatter(t1.iloc[::2], t1.iloc[1::2], c=['#1f77b4','#17becf'])
+xs = df_data.iloc[-2:-1]
+recur2= pd.concat([recur2, xs])
+recur2= pd.concat([recur2, recurmissing.iloc[::2]])
+
+
+#primary
+
+prim1 = df_data.iloc[1::4]
+prim1 = prim1.drop("Patient 11_recurrent tumour Unmethylated signal")
+prim1 = prim1.drop("Patient 12_recurrent tumour Unmethylated signal")
+prim1 = prim1.drop("Patient 29_recurrent tumour_2 Unmethylated signal")
+
+prim1 = pd.concat([prim1, missing.iloc[1:2]])
+
+prim2 = df_data.iloc[::4]
+prim2 = prim2.drop("Patient 11_recurrent tumour Methylated signal")
+prim2 = prim2.drop("Patient 12_recurrent tumour Methylated signal")
+prim2 = prim2.drop("Patient 29_recurrent tumour_2 Methylated signal")
+
+prim2= pd.concat([prim2,missing.iloc[0:1]])
+
+#final indexed dataframes for the primary and recurrent data (separated by meth and unmeth within)
+
+primary = pd.concat([prim1,prim2])   
+recurrent = pd.concat([recur1, recur2])
+
+
+
+
+
+#**scatter analysis on transformed data (unmethylated vs methylated)**
+
+#log transform on both subsets
+primarylog = primary.astype(float)
+primarylog = primarylog.transform(np.log)
+
+recurrentlog = recurrent.astype(float)
+recurrentlog = recurrentlog.transform(np.log)
+
+#methylated (y) vs unmethylated data (x) separating primary and recurrent sets
+
+#primary tumors
+plt.scatter(primarylog[0:22], primarylog[22:], c = 'red')
+
+#recurrent tumors
+plt.scatter(recurrentlog[0:25], recurrentlog[25:], c = 'darkblue')
+
 
