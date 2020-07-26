@@ -44,14 +44,68 @@ print(genelist)
 
 df = df.drop(['ID_REF'], axis = 0)
 
+
+#***SEPARATING PRIMARY VS RECURRENT***
+
+missing = df.iloc[10:16]
+
+#recur1 = unmeth
+#recur2 = meth
+#prim1 = unmeth
+#prim2 = meth
+
+recurmissing = missing.iloc[2:]
+
+#recurrent
+
+recur1 = df.iloc[3::4]
+recur1 = recur1.drop("Patient 11_primary tumour Unmethylated signal")
+
+recur1 = pd.concat([recur1, recurmissing.iloc[1::2]])
+
+recur2 = df.iloc[2::4]
+recur2 = recur2.drop("Patient 11_primary tumour Methylated signal")
+
+
+s = df.iloc[-1:]
+recur1 = pd.concat([recur1, s])
+
+xs = df.iloc[-2:-1]
+recur2= pd.concat([recur2, xs])
+recur2= pd.concat([recur2, recurmissing.iloc[::2]])
+
+
+#primary
+
+prim1 = df.iloc[1::4]
+prim1 = prim1.drop("Patient 11_recurrent tumour Unmethylated signal")
+prim1 = prim1.drop("Patient 12_recurrent tumour Unmethylated signal")
+prim1 = prim1.drop("Patient 29_recurrent tumour_2 Unmethylated signal")
+
+prim1 = pd.concat([prim1, missing.iloc[1:2]])
+
+prim2 = df.iloc[::4]
+prim2 = prim2.drop("Patient 11_recurrent tumour Methylated signal")
+prim2 = prim2.drop("Patient 12_recurrent tumour Methylated signal")
+prim2 = prim2.drop("Patient 29_recurrent tumour_2 Methylated signal")
+
+prim2= pd.concat([prim2,missing.iloc[0:1]])
+
+#final indexed dataframes for the primary and recurrent data (separated by meth and unmeth within)
+
+primary = pd.concat([prim1,prim2])   
+recurrent = pd.concat([recur1, recur2])
+
+
+
 from sklearn.preprocessing import StandardScaler
 
+# Currently for transformed primary tumor data (can change to df, recurring, for full or recurrent data only)
 # Separating out the features
-x = df.loc[:, features].values
-#print(x)
+x = primary.loc[:, features].values
 
 # Separating out the target (patient # vals)
-y = df.loc[:,['Patient Number']].values
+y = primary.loc[:,['Patient Number']].values
 #print("Patient Number equals \n", y)
 
 # Standardizing the features
@@ -66,7 +120,7 @@ principalDf = pd.DataFrame(data = principalComponents
              , columns = ['principal component 1', 'principal component 2'])
 
 # Extract the patient number column
-df_Patient_Number = df[['Patient Number']]
+df_Patient_Number = primary[['Patient Number']]
 
 # Copy the index from principalDf to df_Patient_Number.
 # If we don't do this, the pd.concat() will not know which row to match against which.
