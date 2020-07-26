@@ -14,6 +14,15 @@ df = pd.read_csv(file, sep = ',')
 #editing df to desired format
 df = df.transpose()
 
+#log transform
+a = df.iloc[0:1]
+
+b = df.iloc[1:]
+b = b.astype(float)
+b = b.transform(np.log)
+
+df = pd.concat([a, b])
+
 df.insert(416349, 416349, ['Patient Number','Patient 3 rep 1', 'Patient 3 rep 1','Patient 3 rep 1','Patient 3 rep 1','Patient 9','Patient 9','Patient 9','Patient 9','Patient 10','Patient 10',
              'Patient 11','Patient 11','Patient 11','Patient 11','Patient 12 rep 1','Patient 12 rep 1','Patient 14','Patient 14','Patient 14 rep 1','Patient 14 rep 1',
              'Patient 1','Patient 1','Patient 1','Patient 1','Patient 2','Patient 2','Patient 2','Patient 2','Patient 3','Patient 3',
