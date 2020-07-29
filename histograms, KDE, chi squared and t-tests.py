@@ -45,7 +45,9 @@ npdata = df_data.to_numpy()
 # we do this by deleting even and odd indices
 
 meth = df_data.iloc[::2].to_numpy()
+meth = meth.astype('float')
 unmeth = df_data.iloc[1::2].to_numpy()
+unmeth = unmeth.astype('float')
 
 
 #separated histograms
@@ -69,6 +71,20 @@ print("log transformed total")
 for i in npdata:
     plt.hist(i, bins = 50, log = True)
 plt.show()
+
+#Chi squared goodness of fit estimator
+from scipy.stats import chisquare
+meth = meth.astype('float')
+logmeth = np.log(meth)
+
+chisquare(logmeth)
+
+#Welch's T-test
+import scipy
+from scipy import stats
+logunmeth = np.log(unmeth)
+scipy.stats.ttest_ind(logmeth, logunmeth, equal_var = False)
+
 
 # use kernel density estimation (smooth curves)
 
