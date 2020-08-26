@@ -38,3 +38,5 @@ logdf$gene <- rownames(logdf)
 library(EnhancedVolcano)
 EnhancedVolcano(logdf, lab = rownames(logdf), x='t.statistics', y=('p.values'), xlim = c(-100, 100))
 
+
+
