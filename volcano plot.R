@@ -31,12 +31,11 @@ dataframe = dataframe[-c(1)]
 
 logdf <- dataframe
 logdf[, 1:94] <- log(dataframe[1:94], exp(1))
-logdf$gene <- rownames(logdf)
+#logdf[, 96] <- -log(dataframe[96], 10)
 
+#logdf$gene <- rownames(logdf)
 #ggplot(data=logdf, aes(x=t.statistics, y=-log10(p.values), label=gene)) + geom_point() + theme_minimal() + geom_text() + geom_vline(xintercept=c(-75, 75), col="red")
 
 library(EnhancedVolcano)
-EnhancedVolcano(logdf, lab = rownames(logdf), x='t.statistics', y=('p.values'), xlim = c(-100, 100))
-
-
+EnhancedVolcano(logdf, lab = rownames(logdf), legendLabels = c("NS", "t-statistic", "p-value", "p-value and t-statistic"), x='t.statistics', y=('p.values'), xlim = c(-100, 100), xlab = "t-statistics", ylab = "p-values")
 
