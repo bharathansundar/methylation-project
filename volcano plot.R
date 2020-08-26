@@ -39,3 +39,4 @@ logdf[, 1:94] <- log(dataframe[1:94], exp(1))
 library(EnhancedVolcano)
 EnhancedVolcano(logdf, lab = rownames(logdf), legendLabels = c("NS", "t-statistic", "p-value", "p-value and t-statistic"), x='t.statistics', y=('p.values'), xlim = c(-100, 100), xlab = "t-statistics", ylab = "p-values")
 
+
