@@ -40,3 +40,9 @@ library(EnhancedVolcano)
 EnhancedVolcano(logdf, lab = rownames(logdf), legendLabels = c("NS", "t-statistic", "p-value", "p-value and t-statistic"), x='t.statistics', y=('p.values'), xlim = c(-100, 100), xlab = "t-statistics", ylab = "p-values")
 
 
+#separating into meth and unmethylated data for analysis
+even_indexes <- seq(2,94,2)
+odd_indexes <- seq(1,94,2)
+
+meth <- logdf[, c(odd_indexes)]
+unmeth <- logdf[, c(even_indexes)]
